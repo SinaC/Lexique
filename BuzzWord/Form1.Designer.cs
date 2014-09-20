@@ -39,6 +39,7 @@
             this.btnTest = new System.Windows.Forms.Button();
             this.btnCount = new System.Windows.Forms.Button();
             this.btnCrossword = new System.Windows.Forms.Button();
+            this.btnScrabble = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnReadLexique
@@ -138,17 +139,28 @@
             // 
             this.btnCrossword.Location = new System.Drawing.Point(13, 111);
             this.btnCrossword.Name = "btnCrossword";
-            this.btnCrossword.Size = new System.Drawing.Size(351, 23);
+            this.btnCrossword.Size = new System.Drawing.Size(181, 23);
             this.btnCrossword.TabIndex = 10;
             this.btnCrossword.Text = "Crossword (?=any *=multiple any)";
             this.btnCrossword.UseVisualStyleBackColor = true;
             this.btnCrossword.Click += new System.EventHandler(this.btnCrossword_Click);
+            // 
+            // btnScrabble
+            // 
+            this.btnScrabble.Location = new System.Drawing.Point(200, 111);
+            this.btnScrabble.Name = "btnScrabble";
+            this.btnScrabble.Size = new System.Drawing.Size(164, 23);
+            this.btnScrabble.TabIndex = 11;
+            this.btnScrabble.Text = "Scrabble";
+            this.btnScrabble.UseVisualStyleBackColor = true;
+            this.btnScrabble.Click += new System.EventHandler(this.btnScrabble_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(381, 590);
+            this.Controls.Add(this.btnScrabble);
             this.Controls.Add(this.btnCrossword);
             this.Controls.Add(this.btnCount);
             this.Controls.Add(this.btnTest);
@@ -180,6 +192,7 @@
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnCount;
         private System.Windows.Forms.Button btnCrossword;
+        private System.Windows.Forms.Button btnScrabble;
     }
 }
 

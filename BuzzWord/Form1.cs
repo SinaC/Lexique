@@ -124,5 +124,28 @@ namespace BuzzWord
                 lbResults.Items.Add("No lexique loaded");
             }
         }
+
+        private void btnScrabble_Click(object sender, EventArgs e)
+        {
+            if (lexique != null)
+            {
+                List<string> results = lexique.GetScrabble(txtBuzzWord.Text.ToLower());
+                if (results == null)
+                {
+                    lbResults.Items.Add("No results");
+                }
+                else
+                {
+                    lbResults.DataSource = results.ToList();
+                    //foreach (KeyValuePair<int, int> kv in results)
+                    //    lbResults.Items.Add(kv.Key.ToString() + " => " + kv.Value.ToString());
+                    //lbResults.DataSource = results;
+                }
+            }
+            else
+            {
+                lbResults.Items.Add("No lexique loaded");
+            }
+        }
     }
 }
