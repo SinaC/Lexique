@@ -8,27 +8,22 @@ namespace BuzzWord
 {
     public class CSortedBuzzWord : CBuzzWord
     {
-        protected string m_SortedWord;
+        public string SortedWord { get; private set; }
 
         public CSortedBuzzWord(string word)
             : base(word)
         {
-            m_SortedWord = SortWord(word);
-        }
-
-        public string SortedWord
-        {
-            get { return m_SortedWord; }
+            SortedWord = SortWord(word);
         }
 
         public override string ToString()
         {
-            return base.ToString() + "  [" + m_SortedWord + "]";
+            return base.ToString() + "  [" + SortedWord + "]";
         }
 
         public static int CompareSortedWord(CSortedBuzzWord a, CSortedBuzzWord b)
         {
-            return String.Compare(a.m_SortedWord, b.m_SortedWord);
+            return String.CompareOrdinal(a.SortedWord, b.SortedWord);
         }
 
         protected static string SortWord(string word)
@@ -41,28 +36,18 @@ namespace BuzzWord
 
     public class CBuzzWord
     {
-        protected string m_Word;
-        protected int m_Value;
+        public string Word { get; private set; }
+        public int Value { get; private set; }
 
         public CBuzzWord(string word)
         {
-            m_Word = word;
-            m_Value = ComputeValue(word);
-        }
-
-        public string Word
-        {
-            get { return m_Word; }
-        }
-
-        public int Value
-        {
-            get { return m_Value; }
+            Word = word;
+            Value = ComputeValue(word);
         }
 
         public override string ToString()
         {
-            return m_Word + " => " + m_Value;
+            return Word + " => " + Value;
         }
 
         public static int Compare(CBuzzWord a, CBuzzWord b)
@@ -93,18 +78,18 @@ namespace BuzzWord
 
     public class CLexique
     {
-        private List<string> m_WordList = null;
-        private Regex m_regexAlphaNum;
+        private List<string> _wordList;
+        private readonly Regex _regexAlphaNum;
 
         public CLexique()
         {
-            m_WordList = new List<string>();
-            m_regexAlphaNum = new Regex("[^a-zA-Z]");
+            _wordList = new List<string>();
+            _regexAlphaNum = new Regex("[^a-zA-Z]");
         }
 
         public int WordCount
         {
-            get { return m_WordList == null ? 0 : m_WordList.Count; }
+            get { return _wordList == null ? 0 : _wordList.Count; }
         }
 
         private static string RemoveAccent(string text)
@@ -116,12 +101,12 @@ namespace BuzzWord
 
         public bool IsWordValid(string word)
         {
-            return !m_regexAlphaNum.IsMatch(word);
+            return !_regexAlphaNum.IsMatch(word);
         }
 
         public void Distinct()
         {
-            m_WordList = m_WordList.Distinct().ToList();
+            _wordList = _wordList.Distinct().ToList();
         }
 
         public void ReadLexique3(string filename)
@@ -131,14 +116,17 @@ namespace BuzzWord
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
-                    //line: 1_ortho	2_phon	3_lemme	4_cgram	5_genre	6_nombre	7_freqlemfilms2	8_freqlemlivres	9_freqfilms2	10_freqlivres	11_infover	12_nbhomogr	13_nbhomoph	14_islem	15_nblettres	16_nbphons	17_cvcv	18_p_cvcv	19_voisorth	20_voisphon	21_puorth	22_puphon	23_syll	24_nbsyll	25_cv-cv	26_orthrenv	27_phonrenv	28_orthosyll	29_cgramortho	30_deflem	31_defobs
-                    //token       0      1 ....
-                    string[] tokens = line.Split('\t');
-                    if (null != tokens && tokens.Length > 0)
+                    if (line != null)
                     {
-                        string word = RemoveAccent(tokens[0]).Trim().ToLower();
-                        if (IsWordValid(word))
-                            m_WordList.Add(word);
+                        //line: 1_ortho	2_phon	3_lemme	4_cgram	5_genre	6_nombre	7_freqlemfilms2	8_freqlemlivres	9_freqfilms2	10_freqlivres	11_infover	12_nbhomogr	13_nbhomoph	14_islem	15_nblettres	16_nbphons	17_cvcv	18_p_cvcv	19_voisorth	20_voisphon	21_puorth	22_puphon	23_syll	24_nbsyll	25_cv-cv	26_orthrenv	27_phonrenv	28_orthosyll	29_cgramortho	30_deflem	31_defobs
+                        //token       0      1 ....
+                        string[] tokens = line.Split('\t');
+                        if (tokens.Length > 0)
+                        {
+                            string word = RemoveAccent(tokens[0]).Trim().ToLower();
+                            if (IsWordValid(word))
+                                _wordList.Add(word);
+                        }
                     }
                 }
             }
@@ -152,7 +140,7 @@ namespace BuzzWord
                 {
                     string word = RemoveAccent(reader.ReadLine()).Trim().ToLower();
                     if (IsWordValid(word))
-                        m_WordList.Add(word);
+                        _wordList.Add(word);
                 }
             }
         }
@@ -164,15 +152,18 @@ namespace BuzzWord
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
-                    //line:  "word", "definition"
-                    //token: "" word "" definition
-                    //        0    1  2          3
-                    string[] tokens = line.Split('"');
-                    if (null != tokens && tokens.Length > 0)
+                    if (line != null)
                     {
-                        string word = RemoveAccent(tokens[1]).Trim().ToLower();
-                        if (IsWordValid(word))
-                            m_WordList.Add(word);
+                        //line:  "word", "definition"
+                        //token: "" word "" definition
+                        //        0    1  2          3
+                        string[] tokens = line.Split('"');
+                        if (tokens.Length > 0)
+                        {
+                            string word = RemoveAccent(tokens[1]).Trim().ToLower();
+                            if (IsWordValid(word))
+                                _wordList.Add(word);
+                        }
                     }
                 }
             }
@@ -183,75 +174,75 @@ namespace BuzzWord
             using (StreamReader reader = new StreamReader(filename, System.Text.Encoding.UTF7))
             {
                 string line = reader.ReadLine();
-                string[] tokens = line.Split(',');
-                foreach (string iter in tokens)
+                if (line != null)
                 {
-                    string word = RemoveAccent(iter).Trim().ToLower();
-                    if (IsWordValid(word))
-                        m_WordList.Add(word);
+                    string[] tokens = line.Split(',');
+                    foreach (string iter in tokens)
+                    {
+                        string word = RemoveAccent(iter).Trim().ToLower();
+                        if (IsWordValid(word))
+                            _wordList.Add(word);
+                    }
                 }
             }
         }
 
         public void Clear()
         {
-            m_WordList.Clear();
+            _wordList.Clear();
         }
 
         public List<CSortedBuzzWord> GetBestBuzzWords(int minWordLength, int maxWordLength)
         {
-            List<CSortedBuzzWord> result = new List<CSortedBuzzWord>();
-
-            foreach (string word in m_WordList)
-                if (word.Length >= minWordLength && word.Length <= maxWordLength)
-                    result.Add(new CSortedBuzzWord(word));
-
-            result.Sort(CBuzzWord.Compare);
-
+            List<CSortedBuzzWord> result =
+                _wordList
+                    .Where(x => x.Length >= minWordLength && x.Length <= maxWordLength)
+                    .Select(word => new CSortedBuzzWord(word))
+                    .OrderByDescending(x => x.Value)
+                    .ToList();
             return result;
         }
 
         public List<CBuzzWord> GetBuzzWordList(string buzzString, int minWordLength)
         {
-            if (m_WordList == null)
+            if (_wordList == null)
                 return null;
 
             List<CBuzzWord> result = new List<CBuzzWord>();
 
             bool[] matches = new bool[buzzString.Length];
 
-            foreach (string word in m_WordList)
-                if (word.Length >= minWordLength && word.Length <= buzzString.Length)
+            foreach (string word in _wordList.Where(word => word.Length >= minWordLength && word.Length <= buzzString.Length))
+            {
+                // Word long enough and not too long
+                for (int i = 0; i < matches.Length; i++)
+                    matches[i] = false;
+                // For each letter i in word
+                //      For each letter j in buzzword
+                //          If j not marked and i == j
+                //              mark j and leave loop
+                bool fMatch = true;
+                foreach (char c in word)
                 {
-                    // Word long enough and not too long
-                    for (int i = 0; i < matches.Length; i++)
-                        matches[i] = false;
-                    // For each letter i in word
-                    //      For each letter j in buzzword
-                    //          If j not marked and i == j
-                    //              mark j and leave loop
-                    bool fMatch = true;
-                    for (int i = 0; i < word.Length; i++)
+                    bool fFound = false;
+                    for (int j = 0; j < buzzString.Length; j++)
                     {
-                        bool fFound = false;
-                        for (int j = 0; j < buzzString.Length; j++)
+                        if (!matches[j] && c == buzzString[j])
                         {
-                            if (!matches[j] && word[i] == buzzString[j])
-                            {
-                                matches[j] = true;
-                                fFound = true;
-                                break;
-                            }
-                        }
-                        if (!fFound)
-                        {
-                            fMatch = false;
+                            matches[j] = true;
+                            fFound = true;
                             break;
                         }
                     }
-                    if (fMatch)
-                        result.Add(new CBuzzWord(word));
+                    if (!fFound)
+                    {
+                        fMatch = false;
+                        break;
+                    }
                 }
+                if (fMatch)
+                    result.Add(new CBuzzWord(word));
+            }
 
             result.Sort(CBuzzWord.Compare);
 
@@ -261,7 +252,7 @@ namespace BuzzWord
         public IOrderedEnumerable<KeyValuePair<int, int>> GetWordCountByLetters()
         {
             Dictionary<int, int> result = new Dictionary<int, int>();
-            foreach (string word in m_WordList)
+            foreach (string word in _wordList)
             {
                 if (result.ContainsKey(word.Length))
                     result[word.Length]++;
@@ -273,26 +264,8 @@ namespace BuzzWord
 
         public List<string> CrossWords(string pattern)
         {
-            List<string> result = new List<string>();
             Regex regex = new Regex("^" + pattern.Replace("?", @"\w").Replace("*", @"\w*") + "$");
-            foreach (string word in m_WordList)
-            {
-                if (regex.IsMatch(word))
-                    result.Add(word);
-                //bool fMatch = false;
-                //if (word.Length == pattern.Length) {
-                //    fMatch = true;
-                //    for (int i = 0; i < word.Length; i++)
-                //        if (pattern[i] != '?'
-                //            && pattern[i] != word[i]) {
-                //            fMatch = false;
-                //            break;
-                //        }
-                //}
-                //if (fMatch)
-                //    result.Add(word);
-            }
-            result.Sort();
+            List<string> result = _wordList.Where(word => regex.IsMatch(word)).OrderBy(x => x).ToList();
             return result;
         }
 
