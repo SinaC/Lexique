@@ -60,9 +60,16 @@
                 <TextBlock Text="Search"/>
             </Button>
         </Grid>
-        
+
         <ListBox x:Name="lstResults"
                  Grid.Row="1"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
     </Grid>
 </Window>

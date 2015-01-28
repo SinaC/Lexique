@@ -71,8 +71,6 @@ namespace Wordament
                 }
         }
 
-
-
         private static void DepthFirstSearch(Graph.Graph graph, int vertexIndex, Trie.Trie trie, string content, bool[] visited, ISet<string> results)
         {
             if (trie.Contains(content) && content.Length >= 3)
@@ -94,7 +92,7 @@ namespace Wordament
         private static List<string> GetWords(Graph.Graph graph, Trie.Trie trie)
         {
             ISet<string> results = new HashSet<string>();
-            for(int i = 0; i < graph.Vertices.Count; i++)
+            for (int i = 0; i < graph.Vertices.Count; i++)
             {
                 string content = graph.Vertices[i].Content;
                 bool[] visited = new bool[graph.Vertices.Count];
@@ -138,7 +136,7 @@ namespace Wordament
             List<string> words = GetWords(graph, _trie);
 
             lstResults.Items.Clear();
-            foreach (string word in words.OrderByDescending(x => x.Length))
+            foreach (string word in words.OrderByDescending(x => x.Length).ThenBy(x => x))
                 lstResults.Items.Add(word);
         }
     }

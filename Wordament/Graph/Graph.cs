@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Wordament.Graph
 {
     public class Graph
     {
-        private static readonly Tuple<int,int>[] Adjacents =
+        private static readonly Tuple<int, int>[] Adjacents =
             {
-                new Tuple<int, int>(-1, -1), 
-                new Tuple<int, int>(-1, 0), 
+                new Tuple<int, int>(-1, -1),
+                new Tuple<int, int>(-1, 0),
                 new Tuple<int, int>(-1, 1),
 
-                new Tuple<int, int>(0, -1) //,{0, 0},  {0, 1}, 
-                //{1, -1},  {1, 0},  {1, 1}
+                new Tuple<int, int>(0, -1),
+                //new Tuple<int, int>(0, 0),
+                //new Tuple<int, int>(0, 1),
+
+                //new Tuple<int, int>(1, -1),
+                //new Tuple<int, int>(1, 0),
+                //new Tuple<int, int>(1, 1)
             };
 
         public class Vertex
@@ -42,12 +44,12 @@ namespace Wordament.Graph
         public Graph(string[,] table)
         {
             Vertices = new List<Vertex>();
-            List<int>[,] indices = new List<int>[table.GetLength(0), table.GetLength(1)];
-            for(int x = 0; x < table.GetLength(0); x++)
+            List<int>[,] indices = new List<int>[table.GetLength(0),table.GetLength(1)];
+            for (int x = 0; x < table.GetLength(0); x++)
             {
-                for(int y = 0; y < table.GetLength(1); y++)
+                for (int y = 0; y < table.GetLength(1); y++)
                 {
-                    string content = table[x,y];
+                    string content = table[x, y];
                     if (String.IsNullOrWhiteSpace(content))
                         continue;
                     // Handle double cell such as Q/Z
@@ -71,24 +73,24 @@ namespace Wordament.Graph
                             Content = content
                         });
                     //
-                    foreach(Tuple<int,int> adjacent in Adjacents)
+                    foreach (Tuple<int, int> adjacent in Adjacents)
                     {
-                        int adjacentX = x+ adjacent.Item1;
-                        int adjacentY = y+adjacent.Item2;
+                        int adjacentX = x + adjacent.Item1;
+                        int adjacentY = y + adjacent.Item2;
                         if (adjacentX >= 0 && adjacentY >= 0 && adjacentX < table.GetLength(0) && adjacentY < table.GetLength(1))
-                        foreach(int index in indices[adjacentX, adjacentY])
-                        {
-                            if (isDoubleCell)
+                            foreach (int index in indices[adjacentX, adjacentY])
                             {
-                                Vertices[index].Edges.Add(Vertices.Count-2);
-                                Vertices[Vertices.Count-2].Edges.Add(index);
+                                if (isDoubleCell)
+                                {
+                                    Vertices[index].Edges.Add(Vertices.Count - 2);
+                                    Vertices[Vertices.Count - 2].Edges.Add(index);
+                                }
+                                else
+                                {
+                                    Vertices[index].Edges.Add(Vertices.Count - 1);
+                                    Vertices[Vertices.Count - 1].Edges.Add(index);
+                                }
                             }
-                            else
-                            {
-                                Vertices[index].Edges.Add(Vertices.Count - 1);
-                                Vertices[Vertices.Count - 1].Edges.Add(index);
-                            }
-                        }
                     }
                 }
             }
