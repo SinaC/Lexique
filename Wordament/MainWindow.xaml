@@ -3,6 +3,66 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid x:Name="gridInput" Grid.Column="0">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="30"/>
+                        <Setter Property="Width" Value="30"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+            
+                <TextBox Grid.Row="0" Grid.Column="0" TabIndex="0"/>
+                <TextBox Grid.Row="0" Grid.Column="1" TabIndex="1"/>
+                <TextBox Grid.Row="0" Grid.Column="2" TabIndex="2"/>
+                <TextBox Grid.Row="0" Grid.Column="3" TabIndex="3"/>
+
+                <TextBox Grid.Row="1" Grid.Column="0" TabIndex="4"/>
+                <TextBox Grid.Row="1" Grid.Column="1" TabIndex="5"/>
+                <TextBox Grid.Row="1" Grid.Column="2" TabIndex="6"/>
+                <TextBox Grid.Row="1" Grid.Column="3" TabIndex="7"/>
+
+                <TextBox Grid.Row="2" Grid.Column="0" TabIndex="8"/>
+                <TextBox Grid.Row="2" Grid.Column="1" TabIndex="9"/>
+                <TextBox Grid.Row="2" Grid.Column="2" TabIndex="10"/>
+                <TextBox Grid.Row="2" Grid.Column="3" TabIndex="11"/>
+
+                <TextBox Grid.Row="3" Grid.Column="0" TabIndex="12"/>
+                <TextBox Grid.Row="3" Grid.Column="1" TabIndex="13"/>
+                <TextBox Grid.Row="3" Grid.Column="2" TabIndex="14"/>
+                <TextBox Grid.Row="3" Grid.Column="3" TabIndex="15"/>
+            </Grid>
+
+            <Button x:Name="btnRefresh" Click="btnRefresh_Click"
+                    Grid.Column="1" TabIndex="20">
+                <TextBlock Text="Search"/>
+            </Button>
+        </Grid>
+        
+        <ListBox x:Name="lstResults"
+                 Grid.Row="1"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
