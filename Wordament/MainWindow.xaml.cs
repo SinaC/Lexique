@@ -262,7 +262,7 @@ namespace Wordament
 
                 double distance2 = (position.X - centerX)*(position.X - centerX) + (position.Y - centerY)*(position.Y - centerY);
 
-                if (distance2 <= (lbl.ActualHeight * lbl.ActualHeight + 1)/4)
+                if (distance2 <= (lbl.ActualHeight * lbl.ActualHeight)/4)
                 //if (position.X >= lblX && position.X <= lblX + lbl.ActualWidth &&
                 //    position.Y >= lblY && position.Y <= lblY + lbl.ActualHeight)
                 {

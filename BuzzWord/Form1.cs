@@ -16,16 +16,17 @@ namespace BuzzWord
 
         private void btnReadLexique_Click(object sender, EventArgs e)
         {
+            const string path = @"D:\github\lexique\wordlist\";
             _lexique = new CLexique();
-            _lexique.ReadLexique3(@"D:\Projects\Personal\Lexique\WordList\Lexique3.txt");
-            _lexique.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\liste.de.mots.francais.frgut.txt");
-            _lexique.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\liste_francais.txt");
-            _lexique.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\ods4.txt");
-            _lexique.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\ODS5.txt");
-            _lexique.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\pli07.txt");
-            _lexique.ReadCSV(@"D:\Projects\Personal\Lexique\WordList\DicFra.csv");
-            _lexique.ReadTxt(@"D:\Projects\Personal\Lexique\WordList\dict.xmatiere.com.16.csvtxt");
-            _lexique.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\liste16.txt");
+            _lexique.ReadLexique3(path+@"Lexique3.txt");
+            _lexique.ReadWordList(path+@"liste.de.mots.francais.frgut.txt");
+            _lexique.ReadWordList(path+@"liste_francais.txt");
+            _lexique.ReadWordList(path+@"ods4.txt");
+            _lexique.ReadWordList(path+@"ODS5.txt");
+            _lexique.ReadWordList(path+@"pli07.txt");
+            _lexique.ReadCSV(path+@"DicFra.csv");
+            _lexique.ReadTxt(path+@"dict.xmatiere.com.16.csvtxt");
+            _lexique.ReadWordList(path+@"liste16.txt");
             _lexique.Distinct();
             lblWordCount.Text = String.Format("{0}", _lexique.WordCount);
         }
