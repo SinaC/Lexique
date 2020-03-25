@@ -3,6 +3,49 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+                Margin="5,2"
+                Command="{Binding LoadWordsCommand}">
+            <TextBlock Text="Load lexique"/>
+        </Button>
+        <TextBox Grid.Row="1"
+                 Margin="5,2"
+                 IsEnabled="{Binding AreWordsLoaded}"
+                 Text="{Binding InputText}"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Margin="5,2"
+                    IsEnabled="{Binding AreWordsLoaded}"
+                    Command="{Binding SearchBuzzWordCommand}">
+                <TextBlock Text="Search BuzzWord"/>
+            </Button>
+            <Button Grid.Column="1"
+                    Margin="5,2"
+                    IsEnabled="{Binding AreWordsLoaded}"
+                    Command="{Binding SearchCrosswordsCommand}">
+                <TextBlock Text="Search Crosswords"/>
+            </Button>
+            <Button Grid.Column="2"
+                    Margin="5,2"
+                    IsEnabled="{Binding AreWordsLoaded}"
+                    Command="{Binding SearchScrabbleCommand}">
+                <TextBlock Text="Search Scrabble"/>
+            </Button>
+        </Grid>
+        <ListBox Grid.Row="3"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding Results}"/>
     </Grid>
 </Window>
