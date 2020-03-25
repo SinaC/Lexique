@@ -40,6 +40,7 @@
             this.btnCount = new System.Windows.Forms.Button();
             this.btnCrossword = new System.Windows.Forms.Button();
             this.btnScrabble = new System.Windows.Forms.Button();
+            this.btnReadLexiqueEN = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnReadLexique
@@ -155,11 +156,22 @@
             this.btnScrabble.UseVisualStyleBackColor = true;
             this.btnScrabble.Click += new System.EventHandler(this.btnScrabble_Click);
             // 
+            // btnReadLexiqueEN
+            // 
+            this.btnReadLexiqueEN.Location = new System.Drawing.Point(246, 12);
+            this.btnReadLexiqueEN.Name = "btnReadLexiqueEN";
+            this.btnReadLexiqueEN.Size = new System.Drawing.Size(118, 23);
+            this.btnReadLexiqueEN.TabIndex = 12;
+            this.btnReadLexiqueEN.Text = "Read Lexique EN";
+            this.btnReadLexiqueEN.UseVisualStyleBackColor = true;
+            this.btnReadLexiqueEN.Click += new System.EventHandler(this.btnReadLexiqueEN_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(381, 590);
+            this.Controls.Add(this.btnReadLexiqueEN);
             this.Controls.Add(this.btnScrabble);
             this.Controls.Add(this.btnCrossword);
             this.Controls.Add(this.btnCount);
@@ -193,6 +205,7 @@
         private System.Windows.Forms.Button btnCount;
         private System.Windows.Forms.Button btnCrossword;
         private System.Windows.Forms.Button btnScrabble;
+        private System.Windows.Forms.Button btnReadLexiqueEN;
     }
 }
 
