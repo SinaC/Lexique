@@ -48,11 +48,24 @@ namespace Lexique.ViewModels
         }
 
         private IEnumerable<string> _results;
-
         public IEnumerable<string> Results
         {
             get => _results;
             protected set => Set(() => Results, ref _results, value);
+        }
+
+        private ICommand _searchBookwormCommand;
+        public ICommand SearchBookwormCommand => _searchBookwormCommand = _searchBookwormCommand ?? new RelayCommand(SearchBookworm);
+
+        private void SearchBookworm()
+        {
+            if (_wordList == null || string.IsNullOrWhiteSpace(InputText))
+                return;
+            Regex r = new Regex(@"\((\w+)\)");
+            MatchCollection matches = r.Matches(InputText);
+            var valuableLetters = matches.Cast<Match>().Select(x => x.Value[1]).ToArray();
+            var words = GetWords(InputText, 3, s => new BookwormWord(s, valuableLetters));
+            Results = words.OrderBy(x => x).Select(x => x.ToString()).ToArray();
         }
 
         private ICommand _searchBuzzWordCommand;

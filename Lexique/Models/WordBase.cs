@@ -5,12 +5,20 @@ namespace Lexique.Models
     public abstract class WordBase : IComparable<WordBase>
     {
         public string Word { get; }
-        public int Value { get; }
+
+        private int? _value;
+        public int Value
+        {
+            get
+            {
+                _value = _value ?? ComputeValue(Word);
+                return _value.Value;
+            }
+        }
 
         protected WordBase(string word)
         {
             Word = word;
-            Value = ComputeValue(Word);
         }
 
         protected abstract int ComputeValue(string s);
