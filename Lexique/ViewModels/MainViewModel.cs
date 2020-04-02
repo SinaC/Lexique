@@ -14,13 +14,13 @@ namespace Lexique.ViewModels
     {
         private WordList _wordList;
 
-        public int WordCount => _wordList.Words.Count;
+        public int WordCount => _wordList?.Words.Count ?? 0;
         public bool AreWordsLoaded => _wordList != null && WordCount > 0;
 
-        private ICommand _loadWordsCommand;
-        public ICommand LoadWordsCommand => _loadWordsCommand = _loadWordsCommand ?? new RelayCommand(LoadWords);
+        private ICommand _loadFrWordsCommand;
+        public ICommand LoadFrWordsCommand => _loadFrWordsCommand = _loadFrWordsCommand ?? new RelayCommand(LoadFrWords);
 
-        private void LoadWords()
+        private void LoadFrWords()
         {
             string path = ConfigurationManager.AppSettings["path"];
             _wordList = new WordList();
@@ -33,6 +33,21 @@ namespace Lexique.ViewModels
             _wordList.ReadCSV(Path.Combine(path, "DicFra.csv"));
             _wordList.ReadTxt(Path.Combine(path, "dict.xmatiere.com.16.csvtxt"));
             _wordList.ReadWordList(Path.Combine(path, "liste16.txt"));
+            _wordList.Distinct();
+
+            OnPropertyChanged(nameof(WordCount));
+            OnPropertyChanged(nameof(AreWordsLoaded));
+        }
+
+        private ICommand _loadEnWordsCommand;
+        public ICommand LoadEnWordsCommand => _loadEnWordsCommand = _loadEnWordsCommand ?? new RelayCommand(LoadEnWords);
+
+        private void LoadEnWords()
+        {
+            string path = ConfigurationManager.AppSettings["path"];
+            _wordList = new WordList();
+
+            _wordList.ReadWordList(Path.Combine(path, "sowpods.txt"));
             _wordList.Distinct();
 
             OnPropertyChanged(nameof(WordCount));
