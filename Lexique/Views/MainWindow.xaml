@@ -20,12 +20,14 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Margin="5,2"
-                    Command="{Binding LoadFrWordsCommand}">
+                    Command="{Binding LoadFrWordsCommand}"
+                    local:EventFocusBehavior.ElementToFocus="{Binding ElementName=InputTextBox}">
                 <TextBlock Text="Load lexique FR"/>
             </Button>
             <Button Grid.Column="1"
                     Margin="5,2"
-                    Command="{Binding LoadEnWordsCommand}">
+                    Command="{Binding LoadEnWordsCommand}"
+                    local:EventFocusBehavior.ElementToFocus="{Binding ElementName=InputTextBox}">
                 <TextBlock Text="Load lexique EN"/>
             </Button>
             <TextBlock Grid.Column="3"
@@ -64,13 +66,15 @@
             <Button Grid.Column="2"
                     Margin="5,2"
                     IsEnabled="{Binding AreWordsLoaded}"
-                    Command="{Binding SearchCrosswordsCommand}">
+                    Command="{Binding SearchCrosswordsCommand}"
+                    local:EventFocusBehavior.ElementToFocus="{Binding ElementName=InputTextBox}">
                 <TextBlock Text="Search Crosswords"/>
             </Button>
             <Button Grid.Column="3"
                     Margin="5,2"
                     IsEnabled="{Binding AreWordsLoaded}"
-                    Command="{Binding SearchScrabbleCommand}">
+                    Command="{Binding SearchScrabbleCommand}"
+                    local:EventFocusBehavior.ElementToFocus="{Binding ElementName=InputTextBox}">
                 <TextBlock Text="Search Scrabble"/>
             </Button>
         </Grid>

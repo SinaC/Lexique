@@ -23,22 +23,26 @@ namespace Lexique.MVVM
 
         public static void ElementToFocusPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            // TODO: remove old event
-            var button = sender as Button;
-            if (button != null)
+            if (sender is Button button)
             {
-                button.Click += (s, args) =>
+                if (e.OldValue != null)
+                    button.Click -= ButtonOnClick;
+                if (e.NewValue != null)
+                    button.Click += ButtonOnClick;
+            }
+        }
+
+        private static void ButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            Control control = GetElementToFocus(button);
+            if (control != null)
+            {
+                control.Focus();
+                if (control is TextBox textBox)
                 {
-                    Control control = GetElementToFocus(button);
-                    if (control != null)
-                    {
-                        control.Focus();
-                        if (control is TextBox textBox)
-                        {
-                            textBox.SelectAll();
-                        }
-                    }
-                };
+                    textBox.SelectAll();
+                }
             }
         }
     }
