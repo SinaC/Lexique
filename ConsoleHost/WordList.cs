@@ -4,29 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Lexique.Models
+namespace ConsoleHost
 {
     public class WordList
     {
-        private Regex RegexAlphaNum { get; } = new Regex("[^a-zA-Z]");
-        
-        public List<string> Words { get; private set; }
-        
+        private readonly Regex _regexAlphaNum;
+
+        private List<string> _words;
+
         public WordList()
         {
-            Words = new List<string>();
+            _words = new List<string>();
+            _regexAlphaNum = new Regex("[^a-zA-Z]");
         }
-        
-        public WordList(IEnumerable<string> words)
+
+        public List<string> Words
         {
-            Words = words.Select(x => RemoveAccent(x).Trim().ToLower()).Where(IsWordValid).Distinct().ToList();
+            get { return _words; }
         }
-        
+
         public void Distinct()
         {
-            Words = Words.Distinct().ToList();
+            _words = _words.Where(x => x.Length > 0).Distinct().ToList();
         }
-        
+
         public void ReadLexique3(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -43,13 +44,13 @@ namespace Lexique.Models
                         {
                             string word = RemoveAccent(tokens[0]).Trim().ToLower();
                             if (IsWordValid(word))
-                                Words.Add(word);
+                                _words.Add(word);
                         }
                     }
                 }
             }
         }
-        
+
         public void ReadWordList(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -58,11 +59,11 @@ namespace Lexique.Models
                 {
                     string word = RemoveAccent(reader.ReadLine()).Trim().ToLower();
                     if (IsWordValid(word))
-                        Words.Add(word);
+                        _words.Add(word);
                 }
             }
         }
-        
+
         public void ReadCSV(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -80,13 +81,13 @@ namespace Lexique.Models
                         {
                             string word = RemoveAccent(tokens[1]).Trim().ToLower();
                             if (IsWordValid(word))
-                                Words.Add(word);
+                                _words.Add(word);
                         }
                     }
                 }
             }
         }
-        
+
         public void ReadTxt(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -99,22 +100,23 @@ namespace Lexique.Models
                     {
                         string word = RemoveAccent(iter).Trim().ToLower();
                         if (IsWordValid(word))
-                            Words.Add(word);
+                            _words.Add(word);
                     }
                 }
             }
         }
-        
+
+
         private static string RemoveAccent(string text)
         {
             byte[] aOctets = Encoding.GetEncoding(1251).GetBytes(text);
             string sEnleverAccents = Encoding.ASCII.GetString(aOctets);
             return sEnleverAccents;
         }
-        
+
         private bool IsWordValid(string word)
         {
-            return !RegexAlphaNum.IsMatch(word);
+            return !_regexAlphaNum.IsMatch(word);
         }
     }
 }

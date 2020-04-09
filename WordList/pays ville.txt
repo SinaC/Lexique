@@ -1,0 +1,27 @@
+Voiture
+A: Acura, Alfa Romeo, Alpine, Aston-Martin, Audi
+B: Bentley, BMW, Brilliance, Bugatti, Buick,
+C: Cadillac, Chang'an Motors, Chery, Chevrolet, Chrysler, Citroën, Cupra
+D: Dacia, Daihatsu, Datsun, Dodge, Derways, Dongfeng, DS Automobiles
+E:
+F: FAW, Ferrari, Fiat, Ford
+G: GAZ, Geely, Genesis, GMC
+H: Hafei, Heng Chi, Hindustan Motors, Honda, Hyundai
+I: Infiniti, Iran Khodro, Isuzu
+J: Jaguar, Jeep
+K: Karenjy, Kia, Koenigsegg
+L: Lada, Lamborghini, Lancia, Land-Rover, Lexus, Lincoln, Lobini, Lordstown Motors, Lotus, Luxgen
+M: Maserati, Mahindra, Maruti, Mastretta, Mazda, McLaren, Mercedes-Benz, MG, Mini, Mitsubishi
+N: Nissan
+O: Opel
+P: Pars, Peroduaery, Peugeot, Porsche, Proton
+Q:
+R: RAM, Renault, Rolls-Royce
+S: Saipa, Samsung, Seat, Skoda, Smart, SsangYong, Subaru, Suzuki
+T: Tata, Tesla, Togg, Toyota
+U: UAZ
+V: Vauxhall, Volkswagen, Volvo
+W: Wallyscar
+X:
+Y:
+Z: ZAZ
