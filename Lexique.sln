@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuzzWord", "BuzzWord\BuzzWord.csproj", "{5DAB1112-4B7C-4A51-86EB-D4A99DBAAC65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexique", "Lexique\Lexique.csproj", "{7D8333BA-AA31-4FB6-BAFE-4152EB4A728B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexique.WpfApp", "Lexique\Lexique.WpfApp.csproj", "{7D8333BA-AA31-4FB6-BAFE-4152EB4A728B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordament", "Wordament\Wordament.csproj", "{583254A4-9B0F-4DEF-A774-32427340ED3B}"
 EndProject

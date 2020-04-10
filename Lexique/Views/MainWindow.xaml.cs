@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Lexique.ViewModels;
+using Lexique.WpfApp.ViewModels;
 
-namespace Lexique.Views
+namespace Lexique.WpfApp.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

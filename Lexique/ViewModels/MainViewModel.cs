@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Lexique.IDataAccess;
-using Lexique.Models;
-using Lexique.MVVM;
+using Lexique.WpfApp.Models;
+using Lexique.WpfApp.MVVM;
 
-namespace Lexique.ViewModels
+namespace Lexique.WpfApp.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
@@ -151,5 +151,9 @@ namespace Lexique.ViewModels
 
             return results;
         }
+    }
+
+    internal class MainViewModelDesignData : MainViewModel
+    {
     }
 }
