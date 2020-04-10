@@ -11,22 +11,26 @@ namespace Lexique.WpfApp.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private string[] _words;
-
         private IWordList WordList => new DataAccess.File.WordList(); // TODO: test with mongo
 
         public int WordCount => _words?.Length ?? 0;
         public bool AreWordsLoaded => _words != null && WordCount > 0;
+
+        private string[] _words;
+        [LinkedProperty(nameof(WordCount))]
+        [LinkedProperty(nameof(AreWordsLoaded))]
+        public string[] Words
+        {
+            get => _words;
+            protected set => Set(() => Words, ref _words, value);
+        }
 
         private ICommand _loadFrWordsCommand;
         public ICommand LoadFrWordsCommand => _loadFrWordsCommand = _loadFrWordsCommand ?? new RelayCommand(LoadFrWords);
 
         private void LoadFrWords()
         {
-            _words = WordList.GetWords(Language.French).ToArray();
-
-            OnPropertyChanged(nameof(WordCount));
-            OnPropertyChanged(nameof(AreWordsLoaded));
+            Words = WordList.GetWords(Language.French).ToArray();
         }
 
         private ICommand _loadEnWordsCommand;
@@ -34,14 +38,10 @@ namespace Lexique.WpfApp.ViewModels
 
         private void LoadEnWords()
         {
-            _words = WordList.GetWords(Language.English).ToArray();
-
-            OnPropertyChanged(nameof(WordCount));
-            OnPropertyChanged(nameof(AreWordsLoaded));
+            Words = WordList.GetWords(Language.English).ToArray();
         }
 
         private string _inputText;
-
         public string InputText
         {
             get => _inputText;

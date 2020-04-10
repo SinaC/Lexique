@@ -68,6 +68,7 @@
     <Compile Include="Models\ScrabbleWord.cs" />
     <Compile Include="Models\WordBase.cs" />
     <Compile Include="MVVM\EventFocusBehavior.cs" />
+    <Compile Include="MVVM\LinkedPropertyAttribute.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
