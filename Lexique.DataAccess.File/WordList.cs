@@ -1,32 +1,87 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Lexique.IDataAccess;
 
-namespace Lexique.Models
+namespace Lexique.DataAccess.File
 {
-    public class WordList
+    public class WordList : IWordList
     {
         private Regex RegexAlphaNum { get; } = new Regex("[^a-zA-Z]");
-        
+
         public List<string> Words { get; private set; }
-        
+
         public WordList()
         {
             Words = new List<string>();
         }
-        
+
         public WordList(IEnumerable<string> words)
         {
             Words = words.Select(x => RemoveAccent(x).Trim().ToLower()).Where(IsWordValid).Distinct().ToList();
         }
-        
+
+        #region IWordList
+
+        public IEnumerable<string> GetWords(Language language)
+        {
+            switch (language)
+            {
+                case Language.French:
+                    ReadFrench();
+                    return Words.ToArray();
+                case Language.English:
+                    ReadEnglish();
+                    return Words.ToArray();
+            }
+
+            return Enumerable.Empty<string>();
+        }
+
+        public async Task<IEnumerable<string>> GetWordsAsync(Language language, CancellationToken cancellationToken)
+        {
+            var words = GetWords(language);
+            return await Task.FromResult(words);
+        }
+
+        #endregion
+
+        private void ReadFrench()
+        {
+            Words.Clear();
+
+            string path = ConfigurationManager.AppSettings["path"];
+            ReadLexique3(Path.Combine(path, "Lexique3.txt"));
+            ReadWordList(Path.Combine(path, "liste.de.mots.francais.frgut.txt"));
+            ReadWordList(Path.Combine(path, "liste_francais.txt"));
+            ReadWordList(Path.Combine(path, "ods4.txt"));
+            ReadWordList(Path.Combine(path, "ODS5.txt"));
+            ReadWordList(Path.Combine(path, "pli07.txt"));
+            ReadCSV(Path.Combine(path, "DicFra.csv"));
+            ReadTxt(Path.Combine(path, "dict.xmatiere.com.16.csvtxt"));
+            ReadWordList(Path.Combine(path, "liste16.txt"));
+            Distinct();
+        }
+
+        private void ReadEnglish()
+        {
+            Words.Clear();
+
+            string path = ConfigurationManager.AppSettings["path"];
+            ReadWordList(Path.Combine(path, "sowpods.txt"));
+            Distinct();
+        }
+
         public void Distinct()
         {
             Words = Words.Distinct().ToList();
         }
-        
+
         public void ReadLexique3(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -49,7 +104,7 @@ namespace Lexique.Models
                 }
             }
         }
-        
+
         public void ReadWordList(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -62,7 +117,7 @@ namespace Lexique.Models
                 }
             }
         }
-        
+
         public void ReadCSV(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -86,7 +141,7 @@ namespace Lexique.Models
                 }
             }
         }
-        
+
         public void ReadTxt(string filename)
         {
             using (StreamReader reader = new StreamReader(filename, Encoding.UTF7))
@@ -104,14 +159,14 @@ namespace Lexique.Models
                 }
             }
         }
-        
+
         private static string RemoveAccent(string text)
         {
             byte[] aOctets = Encoding.GetEncoding(1251).GetBytes(text);
             string sEnleverAccents = Encoding.ASCII.GetString(aOctets);
             return sEnleverAccents;
         }
-        
+
         private bool IsWordValid(string word)
         {
             return !RegexAlphaNum.IsMatch(word);

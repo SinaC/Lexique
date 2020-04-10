@@ -1,10 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Linq;
 
-namespace ConsoleHost
+namespace Lexique.Mongo
 {
-    internal class MongoCappedRepository<TDocument> : MongoRepository<TDocument>
+    public class MongoCappedRepository<TDocument> : MongoRepository<TDocument>
     {
         private const long DefaultMaxSize = 16 * 1024 * 1024; // 16 Mb
 

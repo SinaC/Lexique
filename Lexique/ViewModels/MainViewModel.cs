@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using Lexique.IDataAccess;
 using Lexique.Models;
 using Lexique.MVVM;
 
@@ -12,28 +11,19 @@ namespace Lexique.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private WordList _wordList;
+        private string[] _words;
 
-        public int WordCount => _wordList?.Words.Count ?? 0;
-        public bool AreWordsLoaded => _wordList != null && WordCount > 0;
+        private IWordList WordList => new DataAccess.File.WordList(); // TODO: test with mongo
+
+        public int WordCount => _words?.Length ?? 0;
+        public bool AreWordsLoaded => _words != null && WordCount > 0;
 
         private ICommand _loadFrWordsCommand;
         public ICommand LoadFrWordsCommand => _loadFrWordsCommand = _loadFrWordsCommand ?? new RelayCommand(LoadFrWords);
 
         private void LoadFrWords()
         {
-            string path = ConfigurationManager.AppSettings["path"];
-            _wordList = new WordList();
-            _wordList.ReadLexique3(Path.Combine(path, "Lexique3.txt"));
-            _wordList.ReadWordList(Path.Combine(path, "liste.de.mots.francais.frgut.txt"));
-            _wordList.ReadWordList(Path.Combine(path, "liste_francais.txt"));
-            _wordList.ReadWordList(Path.Combine(path, "ods4.txt"));
-            _wordList.ReadWordList(Path.Combine(path, "ODS5.txt"));
-            _wordList.ReadWordList(Path.Combine(path, "pli07.txt"));
-            _wordList.ReadCSV(Path.Combine(path, "DicFra.csv"));
-            _wordList.ReadTxt(Path.Combine(path, "dict.xmatiere.com.16.csvtxt"));
-            _wordList.ReadWordList(Path.Combine(path, "liste16.txt"));
-            _wordList.Distinct();
+            _words = WordList.GetWords(Language.French).ToArray();
 
             OnPropertyChanged(nameof(WordCount));
             OnPropertyChanged(nameof(AreWordsLoaded));
@@ -44,11 +34,7 @@ namespace Lexique.ViewModels
 
         private void LoadEnWords()
         {
-            string path = ConfigurationManager.AppSettings["path"];
-            _wordList = new WordList();
-
-            _wordList.ReadWordList(Path.Combine(path, "sowpods.txt"));
-            _wordList.Distinct();
+            _words = WordList.GetWords(Language.English).ToArray();
 
             OnPropertyChanged(nameof(WordCount));
             OnPropertyChanged(nameof(AreWordsLoaded));
@@ -74,7 +60,7 @@ namespace Lexique.ViewModels
 
         private void SearchBookworm()
         {
-            if (_wordList == null || string.IsNullOrWhiteSpace(InputText))
+            if (_words == null || string.IsNullOrWhiteSpace(InputText))
                 return;
             Regex r = new Regex(@"\((\w+)\)");
             MatchCollection matches = r.Matches(InputText);
@@ -88,7 +74,7 @@ namespace Lexique.ViewModels
 
         private void SearchBuzzWord()
         {
-            if (_wordList == null || string.IsNullOrWhiteSpace(InputText))
+            if (_words == null || string.IsNullOrWhiteSpace(InputText))
                 return;
 
             var words = GetWords(InputText, 3, s => new BuzzWord(s));
@@ -100,11 +86,11 @@ namespace Lexique.ViewModels
 
         private void SearchCrosswords()
         {
-            if (_wordList == null || string.IsNullOrWhiteSpace(InputText))
+            if (_words == null || string.IsNullOrWhiteSpace(InputText))
                 return;
 
             Regex regex = new Regex("^" + InputText.Replace("?", @"\w").Replace("*", @"\w*") + "$");
-            Results = _wordList.Words.Where(word => regex.IsMatch(word)).OrderBy(x => x).ToList();
+            Results = _words.Where(word => regex.IsMatch(word)).OrderBy(x => x).ToList();
         }
 
         private ICommand _searchScrabbleCommand;
@@ -112,7 +98,7 @@ namespace Lexique.ViewModels
 
         private void SearchScrabble()
         {
-            if (_wordList == null || string.IsNullOrWhiteSpace(InputText))
+            if (_words == null || string.IsNullOrWhiteSpace(InputText))
                 return;
 
             List<ScrabbleWord> words = new List<ScrabbleWord>();
@@ -129,7 +115,7 @@ namespace Lexique.ViewModels
 
             bool[] matches = new bool[input.Length];
 
-            foreach (string word in _wordList.Words.Where(word => word.Length >= minWordLength && word.Length <= input.Length))
+            foreach (string word in _words.Where(word => word.Length >= minWordLength && word.Length <= input.Length))
             {
                 // Word long enough and not too long
                 for (int i = 0; i < matches.Length; i++)

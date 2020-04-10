@@ -6,9 +6,9 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 
-namespace ConsoleHost
+namespace Lexique.Mongo
 {
-    internal class MongoRepository<TDocument> : MongoContext
+    public class MongoRepository<TDocument> : MongoContext
     {
         protected IMongoDatabase Db { get; }
 

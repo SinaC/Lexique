@@ -8,24 +8,23 @@ namespace ConsoleHost
 {
     public class WordList
     {
-        private readonly Regex _regexAlphaNum;
+        private Regex RegexAlphaNum { get; } = new Regex("[^a-zA-Z]");
 
-        private List<string> _words;
+        public List<string> Words { get; private set; }
 
         public WordList()
         {
-            _words = new List<string>();
-            _regexAlphaNum = new Regex("[^a-zA-Z]");
+            Words = new List<string>();
         }
 
-        public List<string> Words
+        public WordList(IEnumerable<string> words)
         {
-            get { return _words; }
+            Words = words.Select(x => RemoveAccent(x).Trim().ToLower()).Where(IsWordValid).Distinct().ToList();
         }
 
         public void Distinct()
         {
-            _words = _words.Where(x => x.Length > 0).Distinct().ToList();
+            Words = Words.Distinct().ToList();
         }
 
         public void ReadLexique3(string filename)
@@ -44,7 +43,7 @@ namespace ConsoleHost
                         {
                             string word = RemoveAccent(tokens[0]).Trim().ToLower();
                             if (IsWordValid(word))
-                                _words.Add(word);
+                                Words.Add(word);
                         }
                     }
                 }
@@ -59,7 +58,7 @@ namespace ConsoleHost
                 {
                     string word = RemoveAccent(reader.ReadLine()).Trim().ToLower();
                     if (IsWordValid(word))
-                        _words.Add(word);
+                        Words.Add(word);
                 }
             }
         }
@@ -81,7 +80,7 @@ namespace ConsoleHost
                         {
                             string word = RemoveAccent(tokens[1]).Trim().ToLower();
                             if (IsWordValid(word))
-                                _words.Add(word);
+                                Words.Add(word);
                         }
                     }
                 }
@@ -100,12 +99,11 @@ namespace ConsoleHost
                     {
                         string word = RemoveAccent(iter).Trim().ToLower();
                         if (IsWordValid(word))
-                            _words.Add(word);
+                            Words.Add(word);
                     }
                 }
             }
         }
-
 
         private static string RemoveAccent(string text)
         {
@@ -116,7 +114,7 @@ namespace ConsoleHost
 
         private bool IsWordValid(string word)
         {
-            return !_regexAlphaNum.IsMatch(word);
+            return !RegexAlphaNum.IsMatch(word);
         }
     }
 }
