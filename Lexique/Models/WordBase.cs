@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lexique.Models
+namespace Lexique.WpfApp.Models
 {
     public abstract class WordBase : IComparable<WordBase>
     {

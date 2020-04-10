@@ -1,6 +1,6 @@
-﻿using Lexique.MVVM;
+﻿using Lexique.WpfApp.MVVM;
 
-namespace Lexique.ViewModels
+namespace Lexique.WpfApp.ViewModels
 {
     public class ViewModelBase : ObservableObject
     {

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Lexique.MVVM
+namespace Lexique.WpfApp.MVVM
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {

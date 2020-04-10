@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lexique.Models
+namespace Lexique.WpfApp.Models
 {
     public class BuzzWord : WordBase
     {
