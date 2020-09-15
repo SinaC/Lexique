@@ -8,7 +8,7 @@
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModels:MainViewModelDesignData, IsDesignTimeCreatable=True}"
         Title="Lexique"
-        Height="350" Width="525">
+        Height="480" Width="640">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -54,6 +54,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Margin="5,2"
@@ -82,6 +83,13 @@
                     Command="{Binding SearchScrabbleCommand}"
                     local:EventFocusBehavior.ElementToFocus="{Binding ElementName=InputTextBox}">
                 <TextBlock Text="Search Scrabble"/>
+            </Button>
+            <Button Grid.Column="4"
+                    Margin="5,2"
+                    IsEnabled="{Binding AreWordsLoaded}"
+                    Command="{Binding SearchCodedWordsCommand}"
+                    local:EventFocusBehavior.ElementToFocus="{Binding ElementName=InputTextBox}">
+                <TextBlock Text="Search Coded words"/>
             </Button>
         </Grid>
         <ListBox Grid.Row="3"

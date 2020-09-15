@@ -89,7 +89,8 @@ namespace Lexique.WpfApp.ViewModels
             if (_words == null || string.IsNullOrWhiteSpace(InputText))
                 return;
 
-            Regex regex = new Regex("^" + InputText.Replace("?", @"\w").Replace("*", @"\w*") + "$");
+            string pattern = InputText.ToLowerInvariant().Replace("?", @"\w").Replace("*", @"\w*");
+            Regex regex = new Regex("^" + pattern  + "$");
             Results = _words.Where(word => regex.IsMatch(word)).OrderBy(x => x).ToList();
         }
 
@@ -105,6 +106,53 @@ namespace Lexique.WpfApp.ViewModels
             for (char c = 'a'; c <= 'z'; c++)
                 words.AddRange(GetWords($"{InputText}{c}", InputText.Length - 1, s => new ScrabbleWord(s, c)));
             Results = words.OrderBy(x => x).Select(x => x.ToString()).Distinct().ToList();
+        }
+
+        private ICommand _searchCodedWordsCommand;
+        public ICommand SearchCodedWordsCommand => _searchCodedWordsCommand = _searchCodedWordsCommand ?? new RelayCommand(SearchCodedWords);
+
+        private void SearchCodedWords()
+        {
+            if (_words == null || string.IsNullOrWhiteSpace(InputText))
+                return;
+
+            int length = InputText.Length;
+            string pattern = InputText.ToLowerInvariant();
+            int[][] positionMatching = new int[10][];
+            for (int i = 0; i < 10; i++)
+            {
+                var iString = i.ToString();
+                if (InputText.Contains(iString))
+                {
+                    positionMatching[i] = AllIndexOf(InputText, iString, StringComparison.InvariantCultureIgnoreCase).ToArray();
+                    pattern = pattern.Replace(iString, @"\w");
+                }
+            }
+            pattern = pattern.Replace("?", @"\w");
+
+            Regex regex = new Regex("^" + pattern + "$");
+            var firstMatchResults = _words.Where(word => word.Length == length).Where(word => regex.IsMatch(word)).OrderBy(x => x).ToList();
+            List<string> results = new List<string>();
+            foreach (string result in firstMatchResults)
+            {
+                bool match = true;
+                foreach (var positions in Enumerable.Range(0, 10).Where(x => positionMatching[x] != null && positionMatching[x].Length > 1).Select(digit => positionMatching[digit]))
+                {
+                    for (int i = 1; i < positions.Length; i++)
+                        if (result[positions[i - 1]] != result[positions[i]])
+                        {
+                            match = false;
+                            break;
+                        }
+
+                    if (!match)
+                        break;
+                }
+                if (match)
+                    results.Add(result);
+            }
+
+            Results = results;
         }
 
         //
@@ -150,6 +198,18 @@ namespace Lexique.WpfApp.ViewModels
             }
 
             return results;
+        }
+
+        public static List<int> AllIndexOf(string text, string str, StringComparison comparisonType)
+        {
+            List<int> allIndexOf = new List<int>();
+            int index = text.IndexOf(str, comparisonType);
+            while (index != -1)
+            {
+                allIndexOf.Add(index);
+                index = text.IndexOf(str, index + 1, comparisonType);
+            }
+            return allIndexOf;
         }
     }
 
