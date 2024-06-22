@@ -27,7 +27,7 @@ namespace Wordament
             //wordList.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\liste.de.mots.francais.frgut.txt");
             //wordList.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\liste_francais.txt");
             //wordList.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\ods4.txt");
-            _wordList.ReadWordList(@"D:\GitHub\Lexique\WordList\ODS5.txt");
+            _wordList.ReadWordList(@"D:\Projects\Repos\Lexique\WordList\ODS5.txt");
             //wordList.ReadWordList(@"D:\Projects\Personal\Lexique\WordList\pli07.txt");
             //wordList.ReadCSV(@"D:\Projects\Personal\Lexique\WordList\DicFra.csv");
             //wordList.ReadTxt(@"D:\Projects\Personal\Lexique\WordList\dict.xmatiere.com.16.csvtxt");
